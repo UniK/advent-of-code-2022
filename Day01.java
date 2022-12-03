@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -40,6 +41,7 @@ class Day01 {
                         .mapToInt(Integer::parseInt)
                         .summaryStatistics()
                         .getSum())
+                .sorted(Comparator.reverseOrder())
                 .toList();
 
         /* return the largest sum */
@@ -48,6 +50,14 @@ class Day01 {
                 .summaryStatistics()
                 .getMax();
 
-        out.println("Answer: " + result);
+        out.println("Part One Answer: " + result);
+
+        /* return the total of the three largest sums */
+        List<Long> threeLargestSums = listOfSums.subList(0, 3);
+        long totalOfThreeLargestSums = threeLargestSums.stream()
+                .mapToLong(Long::longValue)
+                .sum();
+
+        out.println("Part Two Answer: " + totalOfThreeLargestSums);
     }
 }
