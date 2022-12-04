@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static java.lang.System.out;
@@ -16,19 +17,35 @@ class Day02 {
 
         /* read values from `Day02.input` file */
         Path path = Paths.get("Day02.input");
-
         Stream<String> lines = Files.lines(path);
-        List<Integer> integers = lines
-                .map(v -> move(
-                        Opponent.valueOf(v.substring(0, 1)),
-                        Proponent.valueOf(v.substring(2, 3))))
-                .toList();
+        List<String> stringList = lines.toList();
         lines.close();
 
+        List<Integer> integers = stringList.stream()
+                .map(line -> move(
+                        Opponent.valueOf(line.substring(0, 1)),
+                        Proponent.valueOf(line.substring(2, 3))))
+                .toList();
+
+        List<Integer> strategyResultList = stringList.stream()
+                .map(line -> strategy(
+                        Opponent.valueOf(line.substring(0, 1)),
+                        Strategy.valueOf(line.substring(2, 3))))
+                .toList();
+
         /* return the total of all earned points */
-        int sum = integers.stream().mapToInt(Integer::intValue).sum();
+        int sum = integers.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
 
         out.println("Part One Answer: " + sum);
+
+        /* return the total of all earned point by using suggested strategy */
+        int sumStrategy = strategyResultList.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        out.println("Part Two Answer: " + sumStrategy);
     }
 
     static int move(Opponent o, Proponent p) {
@@ -48,17 +65,37 @@ class Day02 {
         }
     }
 
-    enum Opponent {
-        A("Rock", 1), B("Paper", 2), C("Scissors", 3);
-
-        Opponent(String value, int i) {
+    static int strategy(Opponent o, Strategy strategy) {
+        if (Objects.equals(strategy.toString(), Strategy.X.toString())) {
+            Proponent proponent = o == Opponent.A
+                    ? Proponent.Z
+                    : Proponent.values()[o.ordinal() - 1];
+            return move(o, proponent);
+        } else if (Objects.equals(strategy.toString(), Strategy.Y.toString())) {
+            return move(o, Proponent.values()[o.ordinal()]);
+        } else {
+            Proponent proponent = o == Opponent.C
+                    ? Proponent.X
+                    : Proponent.values()[o.ordinal() + 1];
+            return move(o, proponent);
         }
     }
 
-    enum Proponent {
-        X("Rock", 1), Y("Paper", 2), Z("Scissors", 3);
+    enum Opponent {
+        A("Rock"), B("Paper"), C("Scissors");
 
-        Proponent(String value, int i) {
-        }
+        Opponent(String value) {}
+    }
+
+    enum Proponent {
+        X("Rock"), Y("Paper"), Z("Scissors");
+
+        Proponent(String value) {}
+    }
+
+    enum Strategy {
+        X("Loss"), Y("Draw"), Z("Win");
+
+        Strategy(String value) {}
     }
 }
