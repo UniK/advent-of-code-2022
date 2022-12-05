@@ -66,12 +66,12 @@ class Day02 {
     }
 
     static int strategy(Opponent o, Strategy strategy) {
-        if (Objects.equals(strategy.toString(), Strategy.X.toString())) {
+        if (Objects.equals(strategy, Strategy.X)) {
             Proponent proponent = o == Opponent.A
                     ? Proponent.Z
                     : Proponent.values()[o.ordinal() - 1];
             return move(o, proponent);
-        } else if (Objects.equals(strategy.toString(), Strategy.Y.toString())) {
+        } else if (Objects.equals(strategy, Strategy.Y)) {
             return move(o, Proponent.values()[o.ordinal()]);
         } else {
             Proponent proponent = o == Opponent.C

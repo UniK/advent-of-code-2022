@@ -14,7 +14,7 @@ import static java.lang.System.out;
 
 public class Day03 {
     public static void main(String... args) throws IOException {
-        out.println("Hello Advent of Code 2022: Day Two");
+        out.println("Hello Advent of Code 2022: Day Three");
 
         /* read values from `Day03.input` file */
         Path path = Paths.get("Day03.input");

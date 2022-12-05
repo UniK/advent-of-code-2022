@@ -29,7 +29,8 @@ class Day01 {
                         IntStream.range(0, collect.size())
                                 .filter(i -> collect.get(i).isBlank()),
                         IntStream.of(collect.size()))
-                .flatMapToInt(s -> s).toArray();
+                .flatMapToInt(s -> s)
+                .toArray();
 
         List<List<String>> subSets = IntStream.range(0, index.length - 1)
                 .mapToObj(i -> collect.subList(index[i] + 1, index[i + 1]))
