@@ -21,13 +21,12 @@ public class Day04 {
         lines.close();
 
         List<List<String>> sectionList = lineList.stream()
-                .peek(out::println)
                 .map(line -> List.of(
                         line.substring(0, line.indexOf(",")),
                         line.substring(line.indexOf(",") + 1)))
                 .toList();
 
-        List<Boolean> collect = sectionList.stream()
+        List<Boolean> collectOne = sectionList.stream()
                 .map(pair -> {
                     String first = pair.get(0);
                     String second = pair.get(1);
@@ -39,14 +38,40 @@ public class Day04 {
                                     Integer.parseInt(second.substring(0, second.indexOf("-"))),
                                     Integer.parseInt(second.substring(second.indexOf("-") + 1))));
                 })
-                .peek(out::println)
                 .toList();
 
-        long count = collect.stream()
+        List<Boolean> collectTwo = sectionList.stream()
+                .map(pair -> {
+                    String first = pair.get(0);
+                    String second = pair.get(1);
+                    return overlap(
+                            new Pair(
+                                    Integer.parseInt(first.substring(0, first.indexOf("-"))),
+                                    Integer.parseInt(first.substring(first.indexOf("-") + 1))),
+                            new Pair(
+                                    Integer.parseInt(second.substring(0, second.indexOf("-"))),
+                                    Integer.parseInt(second.substring(second.indexOf("-") + 1))));
+                })
+                .toList();
+
+        long countOne = collectOne.stream()
                 .filter(t -> t)
                 .count();
 
-        out.println("\nResult: " + count);
+        out.println("Part One Answer: " + countOne);
+
+        long countTwo = collectTwo.stream()
+                .filter(t -> t)
+                .count();
+
+        out.println("Part Two Answer: " + countTwo);
+    }
+
+    private static boolean overlap(Pair x, Pair y) {
+        boolean b = (x.b > y.a)
+                ? (y.b >= x.a)
+                : (x.b >= y.a);
+        return b;
     }
 
     static boolean fullyContains(Pair x, Pair y) {
