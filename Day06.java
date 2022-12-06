@@ -21,7 +21,7 @@ public class Day06 {
         List<String> lineList = lines.toList();
         lines.close();
 
-        int BLOCK_SIZE = 4;
+        int BLOCK_SIZE = 14;
         for (String line : lineList) {
             int result;
             for (int i = 0, stringLength = line.length() - BLOCK_SIZE; i < stringLength; i++) {
